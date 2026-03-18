@@ -3,6 +3,7 @@
 На международном уровне проект изначально продвигался через **Арктический совет**, а сейчас активно развивается в рамках **научно-технологического сотрудничества стран БРИКС**.
 
 # Unigine 2 SIM 3D Game Module
+![](https://comiccon2025.github.io/img/snowflake/lIdar.jpg)
 ![](https://blockchainaccreditive.github.io/css/price2.jpg)
 ![](https://mas-snezhinka.github.io/img/vodorod_water.png)
 ![](https://comiccon2025.github.io/img/snowflake/underwater_1.jpg)
