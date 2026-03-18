@@ -7,6 +7,7 @@
 ![](https://mas-snezhinka.github.io/img/yanao_government.png)
 ![](https://mas-snezhinka.github.io/img/yanao_gov.png)
 ![](https://comiccon2025.github.io/img/snowflake/lIdar.jpg)
+![](https://mas-snezhinka.github.io/img/3.png)
 ![](https://blockchainaccreditive.github.io/css/price2.jpg)
 ![](https://mas-snezhinka.github.io/img/vodorod_water.png)
 ![](https://comiccon2025.github.io/img/snowflake/underwater_1.jpg)
