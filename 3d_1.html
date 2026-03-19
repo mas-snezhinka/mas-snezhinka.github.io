@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Арктическая станция «Снежинка» — цифровой двойник (Three.js)</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 30, 50, 0.85);
+            color: #b0e0ff;
+            padding: 12px 24px;
+            border-radius: 40px;
+            backdrop-filter: blur(8px);
+            border: 1px solid #2c5a7a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            z-index: 10;
+            pointer-events: none;
+            font-size: 14px;
+            border-left: 4px solid #6ab0ff;
+        }
+        #info h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: white;
+        }
+        #info p {
+            margin: 5px 0 0;
+            opacity: 0.8;
+        }
+        #status {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: #ccc;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>❄️ МАС «Снежинка» (МФТИ — ЯНАО)</h1>
+        <p>Центральный купол + 6 модулей · Галереи · Ветропарк · Солнечные панели · Нефритовое озеро</p>
+    </div>
+    <div id="status">⚡ Интерактивная модель | Автоповорот | Туман · Отражения</div>
+
+    <!-- Подключаем Three.js и необходимые аддоны -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { Reflector } from 'three/addons/objects/Reflector.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- Инициализация сцены, камеры, рендереров ---
+        const scene = new THREE.Scene();
+        // Холодный градиент неба (SkyBox через кубическую текстуру создать сложно, используем цвет и туман)
+        scene.background = new THREE.Color(0x0a1e2f);
+        scene.fog = new THREE.FogExp2(0x0a1e2f, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(25, 12, 30);
+        camera.lookAt(0, 2, 0);
+
+        // WebGL рендерер
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = false; // тени отключены для производительности
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        document.body.appendChild(renderer.domElement);
+
+        // CSS2D рендерер для меток (опционально)
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        // --- Управление ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.4;
+        controls.maxPolarAngle = Math.PI / 2.2; // ограничим обзор
+        controls.target.set(0, 3, 0);
+        controls.enableZoom = true;
+
+        // --- Освещение ---
+        // Ambient (заполняющий свет)
+        const ambientLight = new THREE.AmbientLight(0x40486e, 0.9);
+        scene.add(ambientLight);
+
+        // Основной направленный свет (низкое арктическое солнце)
+        const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.5);
+        sunLight.position.set(5, 8, 15);
+        sunLight.castShadow = false;
+        scene.add(sunLight);
+
+        // Дополнительный холодный свет сзади
+        const backLight = new THREE.DirectionalLight(0xaaccff, 0.6);
+        backLight.position.set(-10, 5, -15);
+        scene.add(backLight);
+
+        // Точечные источники внутри куполов для имитации свечения (добавим позже)
+
+        // --- Ландшафт (Нефритовая долина, массив Рай-Из) ---
+        const terrainWidth = 80;
+        const terrainDepth = 80;
+        const terrainSegments = 128;
+
+        const terrainGeo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, terrainSegments, terrainSegments);
+        terrainGeo.rotateX(-Math.PI / 2); // горизонтально
+
+        // Генерация высот: имитируем горы с одной стороны (север) и тундру с другой (юг)
+        const positionAttribute = terrainGeo.attributes.position;
+        const vertexCount = positionAttribute.count;
+
+        for (let i = 0; i < vertexCount; i++) {
+            const ix = i * 3;
+            const x = positionAttribute.array[ix];
+            const z = positionAttribute.array[ix + 2];
+            
+            // Нормируем координаты в диапазон [-1, 1] для удобства
+            const nx = x / (terrainWidth / 2);
+            const nz = z / (terrainDepth / 2);
+            
+            // Высота: крутые склоны на севере (nz ближе к 1), пологая тундра на юге (nz ближе к -1)
+            // Добавляем шумоподобные колебания
+            let height = 0;
+            
+            // Северная часть (гористая)
+            if (nz > 0.2) {
+                const factor = (nz - 0.2) / 0.8; // от 0 до 1
+                height += Math.sin(x * 0.3) * Math.cos(z * 0.3) * 1.5 + Math.sin(x * 0.8) * 0.8;
+                height *= factor * 3.0;
+                height += 0.5;
+            } else {
+                // Южная часть (тундра) — небольшие кочки
+                height = Math.sin(x * 0.5) * Math.cos(z * 0.5) * 0.4 + 0.2;
+            }
+            
+            // Добавим резкие пики в случайных местах для имитации скал
+            if (Math.random() < 0.005 && nz > 0.3) {
+                height += 2.0 + Math.random() * 1.5;
+            }
+            
+            positionAttribute.array[ix + 1] = height; // y
+        }
+
+        terrainGeo.computeVertexNormals();
+
+        // Текстура земли (используем простой материал с цветом)
+        const terrainMat = new THREE.MeshStandardMaterial({
+            color: 0x5a6a7a,
+            roughness: 0.8,
+            emissive: 0x101820,
+            flatShading: false,
+            side: THREE.DoubleSide
+        });
+        
+        // Добавим вариации цвета с помощью вертексных цветов (упрощенно)
+        const colors = [];
+        for (let i = 0; i < vertexCount; i++) {
+            const y = positionAttribute.array[i*3 + 1];
+            // Чем выше, тем светлее (имитация снега)
+            const gray = 0.4 + Math.min(y / 5, 0.6);
+            colors.push(gray, gray, gray);
+        }
+        terrainGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+        terrainMat.vertexColors = true;
+
+        const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+        terrain.receiveShadow = false;
+        terrain.position.set(0, -0.5, 0); // опустим, чтобы основание станции было выше
+        scene.add(terrain);
+
+        // --- Нефритовое озеро (с отражателем) ---
+        const lakeWidth = 15;
+        const lakeDepth = 8;
+        const lakeGeometry = new THREE.PlaneGeometry(lakeWidth, lakeDepth);
+        
+        const lake = new Reflector(lakeGeometry, {
+            clipBias: 0.003,
+            textureWidth: window.innerWidth * 2,
+            textureHeight: window.innerHeight * 2,
+            color: 0x00a86b, // бирюзовый
+            recursive: true
+        });
+        lake.rotateX(-Math.PI / 2);
+        lake.position.set(-12, 0.1, 12); // юго-западнее станции
+        scene.add(lake);
+
+        // Добавим мелкие камни вокруг озера
+        for (let i = 0; i < 30; i++) {
+            const rockGeo = new THREE.DodecahedronGeometry(0.2 + Math.random()*0.3);
+            const rockMat = new THREE.MeshStandardMaterial({ color: 0x556677, roughness: 0.9 });
+            const rock = new THREE.Mesh(rockGeo, rockMat);
+            const angle = Math.random() * Math.PI * 2;
+            const rad = 4 + Math.random() * 5;
+            rock.position.set(
+                lake.position.x + Math.cos(angle)*rad,
+                0.1 + Math.random()*0.3,
+                lake.position.z + Math.sin(angle)*rad
+            );
+            scene.add(rock);
+        }
+
+        // --- Параметры станции ---
+        const centerRadius = 2.8;        // центральный купол
+        const moduleRadius = 1.9;        // периферийные купола
+        const ringDist = 8.5;             // расстояние от центра до периферии
+        const pileHeight = 1.8;            // высота свай (станция приподнята на 2м)
+        const galleryRadius = 0.7;
+
+        // Массив модулей (функциональные роли)
+        const modules = [
+            { angle: 0,           name: 'Лаборатория №1 (Энергетика/Водород)', color: 0xaaccff, role: 'lab' },
+            { angle: Math.PI/3,   name: 'Жилой блок №1 (Каюты)', color: 0xbbddff, role: 'habitat' },
+            { angle: 2*Math.PI/3, name: 'Жилой блок №2 (Медблок)', color: 0xaaddff, role: 'habitat' },
+            { angle: Math.PI,     name: 'Спортивно-оздоровительный', color: 0x99eeff, role: 'sport' },
+            { angle: 4*Math.PI/3, name: 'Технологический блок (ЦПУ)', color: 0x88aaff, role: 'tech' },
+            { angle: 5*Math.PI/3, name: 'Лаборатория №2 (Биотехнологии)', color: 0x88ddff, role: 'lab' }
+        ];
+
+        // --- Создание свай (InstancedMesh) ---
+        // Под каждый купол ставим 8 свай по кругу, под галереи — по две линии (упрощенно)
+        const pileCountPerDome = 8;
+        const totalPiles = (1 + 6) * pileCountPerDome + 6 * 4; // центральный + 6 модулей + по 4 под каждую галерею
+        const pileMatrix = new THREE.InstancedMesh(
+            new THREE.CylinderGeometry(0.15, 0.18, pileHeight, 6),
+            new THREE.MeshStandardMaterial({ color: 0x8899aa, roughness: 0.5, metalness: 0.6 }),
+            totalPiles
+        );
+        pileMatrix.castShadow = false;
+        pileMatrix.receiveShadow = false;
+        scene.add(pileMatrix);
+
+        const dummy = new THREE.Object3D();
+        let pileIndex = 0;
+
+        // Функция добавления свай по окружности
+        function addPilesAround(centerX, centerZ, radius, count, yOffset = 0) {
+            for (let i = 0; i < count; i++) {
+                const angle = (i / count) * Math.PI * 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const z = centerZ + Math.sin(angle) * radius;
+                dummy.position.set(x, pileHeight/2 + yOffset, z);
+                dummy.rotation.set(0, 0, 0);
+                dummy.scale.set(1, 1, 1);
+                dummy.updateMatrix();
+                pileMatrix.setMatrixAt(pileIndex++, dummy.matrix);
+            }
+        }
+
+        // Центральный купол (сваи по радиусу 3.2)
+        addPilesAround(0, 0, 3.2, pileCountPerDome, 0);
+
+        // Периферийные купола
+        modules.forEach(mod => {
+            const x = Math.sin(mod.angle) * ringDist;
+            const z = Math.cos(mod.angle) * ringDist;
+            addPilesAround(x, z, 2.2, pileCountPerDome, 0);
+        });
+
+        // Сваи под галереи (по две с каждой стороны) — упрощенно: по 4 сваи вдоль каждой линии
+        modules.forEach(mod => {
+            const angle = mod.angle;
+            const dir = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle)).normalize();
+            const start = dir.clone().multiplyScalar(centerRadius + 0.8);
+            const end = dir.clone().multiplyScalar(ringDist - moduleRadius - 0.8);
+            
+            for (let i = 0; i < 4; i++) {
+                const t = i / 3; // от 0 до 1
+                const pos = dir.clone().multiplyScalar(centerRadius + 1.2 + t * (ringDist - centerRadius - moduleRadius - 2.0));
+                // две сваи слева и справа от оси
+                const perp = new THREE.Vector3(-dir.z, 0, dir.x).normalize();
+                for (let sign = -1; sign <= 1; sign += 2) {
+                    const offset = perp.clone().multiplyScalar(sign * 0.8);
+                    dummy.position.set(pos.x + offset.x, pileHeight/2, pos.z + offset.z);
+                    dummy.updateMatrix();
+                    pileMatrix.setMatrixAt(pileIndex++, dummy.matrix);
+                }
+            }
+        });
+
+        pileMatrix.instanceMatrix.needsUpdate = true;
+
+        // --- Функция создания геодезического купола (каркас + полусфера) ---
+        function createDome(radius, color, isCenter = false) {
+            const group = new THREE.Group();
+            
+            // Основная полусфера (прозрачная)
+            const sphereGeo = new THREE.SphereGeometry(radius, 24, 16);
+            const sphereMat = new THREE.MeshPhongMaterial({
+                color: color,
+                emissive: 0x112233,
+                transparent: true,
+                opacity: 0.25,
+                shininess: 40,
+                side: THREE.DoubleSide
+            });
+            const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+            sphere.position.y = radius * 0.9; // приподнимем, чтобы основание было на уровне свай
+            group.add(sphere);
+
+            // Каркас (геодезическая сетка)
+            const wireframeGeo = new THREE.IcosahedronGeometry(radius, 2);
+            const wireframeMat = new THREE.MeshStandardMaterial({
+                color: 0xccddff,
+                emissive: 0x224466,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.7
+            });
+            const wireframe = new THREE.Mesh(wireframeGeo, wireframeMat);
+            wireframe.position.y = radius * 0.9;
+            group.add(wireframe);
+
+            // Контурная LED-подсветка (кольцо)
+            const ringGeo = new THREE.TorusGeometry(radius, 0.06, 8, 48);
+            const ringMat = new THREE.MeshStandardMaterial({ color: 0x3a8cff, emissive: 0x113366 });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / 2;
+            ring.position.y = radius * 0.9;
+            group.add(ring);
+
+            // Антенна/шпиль
+            const antennaGeo = new THREE.ConeGeometry(0.12, 0.8, 6);
+            const antennaMat = new THREE.MeshStandardMaterial({ color: 0xffaa55, emissive: 0x442200 });
+            const antenna = new THREE.Mesh(antennaGeo, antennaMat);
+            antenna.position.y = radius * 1.4;
+            group.add(antenna);
+
+            // Внутреннее свечение (точечный свет)
+            const light = new THREE.PointLight(0x88aaff, 1.5, 8);
+            light.position.set(0, radius * 0.5, 0);
+            group.add(light);
+
+            return group;
+        }
+
+        // --- Центральный купол ---
+        const centerDome = createDome(centerRadius, 0xd0e0ff, true);
+        centerDome.position.y = pileHeight + 0.2;
+        scene.add(centerDome);
+
+        // --- Периферийные купола и галереи ---
+        modules.forEach((mod, idx) => {
+            const angle = mod.angle;
+            const x = Math.sin(angle) * ringDist;
+            const z = Math.cos(angle) * ringDist;
+            
+            // Купол
+            const dome = createDome(moduleRadius, mod.color);
+            dome.position.set(x, pileHeight + 0.2, z);
+            scene.add(dome);
+
+            // Метка с названием (CSS2D)
+            const div = document.createElement('div');
+            div.textContent = mod.name.substring(0, 2) + ' · ' + mod.role;
+            div.style.color = '#cce8ff';
+            div.style.fontSize = '12px';
+            div.style.background = 'rgba(10,30,50,0.8)';
+            div.style.padding = '2px 8px';
+            div.style.borderRadius = '12px';
+            div.style.border = '1px solid #2f6f9f';
+            const label = new CSS2DObject(div);
+            label.position.set(x, pileHeight + 4.5, z);
+            scene.add(label);
+        });
+
+        // --- Галереи (соединительные переходы) ---
+        function createGallery(dirVec, length, radius = 0.7) {
+            const group = new THREE.Group();
+            
+            // Основной цилиндр (полупрозрачный)
+            const tubeGeo = new THREE.CylinderGeometry(radius, radius, length, 8);
+            const tubeMat = new THREE.MeshPhongMaterial({
+                color: 0xaaccff,
+                transparent: true,
+                opacity: 0.3,
+                emissive: 0x112244,
+                side: THREE.DoubleSide
+            });
+            const tube = new THREE.Mesh(tubeGeo, tubeMat);
+            tube.position.y = pileHeight + 0.8;
+            tube.rotation.z = Math.PI/2; // поворот для выравнивания по X
+            group.add(tube);
+
+            // Продольные ребра
+            const edges = new THREE.EdgesGeometry(tubeGeo);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x88bbff }));
+            line.position.y = pileHeight + 0.8;
+            line.rotation.z = Math.PI/2;
+            group.add(line);
+
+            // Контурные кольца подсветки
+            for (let i = 0; i < 3; i++) {
+                const ringGeo = new THREE.TorusGeometry(radius, 0.04, 6, 16);
+                const ringMat = new THREE.MeshStandardMaterial({ color: 0x0066cc, emissive: 0x224466 });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.position.y = pileHeight + 0.8;
+                ring.rotation.x = Math.PI/2;
+                ring.rotation.y = Math.PI/2;
+                ring.position.x = -length/2 + i * length/2 + 0.3;
+                group.add(ring);
+            }
+
+            // Поворачиваем группу вдоль направления
+            const quaternion = new THREE.Quaternion();
+            quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), dirVec);
+            group.applyQuaternion(quaternion);
+
+            // Позиционируем центр галереи на середине пути между куполами
+            const startOffset = centerRadius + 0.6;
+            const endOffset = ringDist - moduleRadius - 0.6;
+            const mid = (startOffset + endOffset) / 2;
+            const centerPos = dirVec.clone().multiplyScalar(mid);
+            group.position.copy(centerPos.clone().add(new THREE.Vector3(0, pileHeight + 0.8, 0)));
+
+            return group;
+        }
+
+        // Создаём 6 галерей
+        modules.forEach(mod => {
+            const dir = new THREE.Vector3(Math.sin(mod.angle), 0, Math.cos(mod.angle)).normalize();
+            const length = ringDist - centerRadius - moduleRadius + 1.2;
+            const gallery = createGallery(dir, length, 0.6);
+            scene.add(gallery);
+        });
+
+        // --- Внешние объекты: ветропарк (северная сторона) ---
+        const windFarmPos = new THREE.Vector3(0, 0, 20);
+        for (let i = 0; i < 5; i++) {
+            const offsetX = (i - 2) * 3.5;
+            const offsetZ = i * 2.0;
+            
+            const towerGeo = new THREE.CylinderGeometry(0.4, 0.6, 7, 6);
+            const towerMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.4 });
+            const tower = new THREE.Mesh(towerGeo, towerMat);
+            tower.position.set(windFarmPos.x + offsetX, 3.5, windFarmPos.z + offsetZ);
+            scene.add(tower);
+            
+            // Лопасти (крест)
+            const bladeGroup = new THREE.Group();
+            bladeGroup.position.y = 6.8;
+            
+            const bladeGeo = new THREE.BoxGeometry(2.5, 0.1, 0.3);
+            const bladeMat = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
+            const blade1 = new THREE.Mesh(bladeGeo, bladeMat);
+            blade1.rotation.z = Math.PI/2;
+            bladeGroup.add(blade1);
+            
+            const blade2 = new THREE.Mesh(bladeGeo, bladeMat);
+            blade2.rotation.x = Math.PI/2;
+            bladeGroup.add(blade2);
+            
+            tower.add(bladeGroup);
+            
+            // Сохраним для анимации
+            if (!window.windTurbines) window.windTurbines = [];
+            window.windTurbines.push(bladeGroup);
+        }
+
+        // --- Солнечные панели (юго-восточная сторона) ---
+        const panelGroup = new THREE.Group();
+        const panelPos = new THREE.Vector3(15, 0.2, -10);
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 3; j++) {
+                const panelGeo = new THREE.BoxGeometry(2.2, 0.1, 1.2);
+                const panelMat = new THREE.MeshStandardMaterial({ color: 0x224466, emissive: 0x112233 });
+                const panel = new THREE.Mesh(panelGeo, panelMat);
+                panel.position.set(i * 2.5 - 3, 0.2, j * 1.8 - 2);
+                panel.rotation.y = -0.3;
+                panelGroup.add(panel);
+                
+                // Наклон
+                panel.rotation.x = -0.4;
+            }
+        }
+        panelGroup.position.copy(panelPos);
+        scene.add(panelGroup);
+
+        // --- Добавим несколько камней и деталей ландшафта ---
+        for (let i = 0; i < 60; i++) {
+            const rockGeo = new THREE.DodecahedronGeometry(0.2 + Math.random()*0.6);
+            const rockMat = new THREE.MeshStandardMaterial({ color: 0x668899 });
+            const rock = new THREE.Mesh(rockGeo, rockMat);
+            const angle = Math.random() * Math.PI*2;
+            const rad = 10 + Math.random() * 25;
+            const x = Math.cos(angle) * rad;
+            const z = Math.sin(angle) * rad;
+            const y = terrainGeo.attributes.position.array[ (Math.floor((x + 40)/80 * 128) * 128 + Math.floor((z+40)/80 * 128)) * 3 + 1 ] + 0.2;
+            rock.position.set(x, y, z);
+            rock.scale.set(1, 0.5 + Math.random(), 1);
+            scene.add(rock);
+        }
+
+        // --- Анимация ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Вращение ветряков
+            if (window.windTurbines) {
+                window.windTurbines.forEach(turb => {
+                    turb.rotation.y += 0.02;
+                });
+            }
+
+            controls.update();
+            
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        
+        animate();
+
+        // --- Обработка изменения размера окна ---
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    </script>
+</body>
+</html>
