@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страны участники МАС «Снежинка»</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f7fb;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 2rem 1rem;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .intro {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .intro h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 1.5rem 1.5rem 0.75rem;
+            border-bottom: 1px solid #eef2f8;
+        }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(120deg, #1e293b, #2d3e5f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.5rem;
+            padding: 1.5rem;
+        }
+        .country-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            text-align: center;
+            padding: 0.5rem 0.25rem;
+            border: 1px solid #edf2f7;
+            transition: 0.1s ease;
+        }
+        .country-card:hover {
+            border-color: #cbdde9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -8px rgba(0,0,0,0.08);
+        }
+        .flag {
+            width: 110px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: #f1f5f9;
+            margin-bottom: 0.5rem;
+            border: 1px solid #e2e8f0;
+            object-fit: cover;
+        }
+        .country-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 640px) {
+            .countries-grid {
+                grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            .flag {
+                width: 85px;
+            }
+            .section-header {
+                padding: 1rem 1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="intro">
+        <h1>Страны участники МАС «Снежинка»</h1>
+    </div>
+
+    <!-- БРИКС+ -->
+    <div class="section">
+        <div class="section-header">
+            <h2>🌍 БРИКС+ · 11 стран</h2>
+        </div>
+        <div class="countries-grid" id="brics-grid"></div>
+    </div>
+
+    <!-- Арктический совет — государства-члены -->
+    <div class="section">
+        <div class="section-header">
+            <h2>❄️ Арктический совет · государства-члены · 8 стран</h2>
+        </div>
+        <div class="countries-grid" id="arctic-members-grid"></div>
+    </div>
+
+    <!-- Арктический совет — постоянные наблюдатели -->
+    <div class="section">
+        <div class="section-header">
+            <h2>👁️ Арктический совет · постоянные наблюдатели · 13 стран</h2>
+        </div>
+        <div class="countries-grid" id="arctic-observers-grid"></div>
+    </div>
+
+    <!-- ЭКОВАС (ECOWAS) -->
+    <div class="section">
+        <div class="section-header">
+            <h2>🌍 ЭКОВАС · Экономическое сообщество стран Западной Африки · 12 стран</h2>
+        </div>
+        <div class="countries-grid" id="ecowas-grid"></div>
+    </div>
+</div>
+
+<script>
+    // БРИКС+
+    const bricsCountries = [
+        { name: "Бразилия", code: "br" },
+        { name: "Россия", code: "ru" },
+        { name: "Индия", code: "in" },
+        { name: "Китай", code: "cn" },
+        { name: "Южно-Африканская Республика", code: "za" },
+        { name: "Египет", code: "eg" },
+        { name: "Индонезия", code: "id" },
+        { name: "Саудовская Аравия", code: "sa" },
+        { name: "Эфиопия", code: "et" },
+        { name: "Объединённые Арабские Эмираты", code: "ae" }
+    ];
+
+    // Арктический совет — члены
+    const arcticMembers = [
+        { name: "Россия", code: "ru" },
+        { name: "Канада", code: "ca" },
+        { name: "США", code: "us" },
+        { name: "Дания", code: "dk" },
+        { name: "Норвегия", code: "no" },
+        { name: "Швеция", code: "se" },
+        { name: "Финляндия", code: "fi" },
+        { name: "Исландия", code: "is" }
+    ];
+
+    // Арктический совет — наблюдатели
+    const arcticObservers = [
+        { name: "Китай", code: "cn" },
+        { name: "Индия", code: "in" },
+        { name: "Япония", code: "jp" },
+        { name: "Республика Корея", code: "kr" },
+        { name: "Сингапур", code: "sg" },
+        { name: "Италия", code: "it" },
+        { name: "Великобритания", code: "gb" },
+        { name: "Франция", code: "fr" },
+        { name: "Германия", code: "de" },
+        { name: "Испания", code: "es" },
+        { name: "Нидерланды", code: "nl" },
+        { name: "Польша", code: "pl" },
+        { name: "Швейцария", code: "ch" }
+    ];
+
+    // ЭКОВАС (ECOWAS) — 12 государств-членов (актуальный состав)
+    const ecowasCountries = [
+        { name: "Бенин", code: "bj" },
+        { name: "Кабо-Верде", code: "cv" },
+        { name: "Гамбия", code: "gm" },
+        { name: "Гана", code: "gh" },
+        { name: "Гвинея", code: "gn" },
+        { name: "Гвинея-Бисау", code: "gw" },
+        { name: "Кот-д'Ивуар", code: "ci" },
+        { name: "Либерия", code: "lr" },
+        { name: "Нигерия", code: "ng" },
+        { name: "Сенегал", code: "sn" },
+        { name: "Сьерра-Леоне", code: "sl" },
+        { name: "Того", code: "tg" }
+    ];
+
+    function renderGrid(containerId, countries) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = countries.map(country => `
+            <div class="country-card">
+                <img class="flag" 
+                     src="https://cdn.jsdelivr.net/npm/flag-icons@6.11.0/flags/4x3/${country.code}.svg"
+                     alt="Флаг ${country.name}"
+                     loading="lazy"
+                     width="110"
+                     height="auto"
+                     style="background: #f0f0f0;">
+                <div class="country-name">${country.name}</div>
+            </div>
+        `).join('');
+    }
+
+    renderGrid('brics-grid', bricsCountries);
+    renderGrid('arctic-members-grid', arcticMembers);
+    renderGrid('arctic-observers-grid', arcticObservers);
+    renderGrid('ecowas-grid', ecowasCountries);
+</script>
+</body>
+</html>
