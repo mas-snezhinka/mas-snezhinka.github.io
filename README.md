@@ -6,6 +6,7 @@
   <br>
 
 ![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
+![](https://mas-snezhinka.github.io/img/Countrys.png)
   
  ![](https://mas-snezhinka.github.io/img/unigine_vehicles.jpg)
  ![](https://refoldit.github.io/img/snowflake/render/trucks_simulator.png)
