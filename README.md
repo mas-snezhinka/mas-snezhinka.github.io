@@ -4,9 +4,6 @@
 
   [Unigine 2 SIM 3D Module](https://unigine.com/ru/products/sim/use-cases/)
   <br>
-
-![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
-![](https://mas-snezhinka.github.io/img/Countrys.png)
   
  ![](https://mas-snezhinka.github.io/img/unigine_vehicles.jpg)
  ![](https://refoldit.github.io/img/snowflake/render/trucks_simulator.png)
@@ -23,4 +20,7 @@
  ![](https://mas-snezhinka.github.io/img/vezdehod.png)
  ![](https://mas-snezhinka.github.io/img/vodorod_water.png)
  ![](https://mas-snezhinka.github.io/img/vision.png)
+
+![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
+![](https://mas-snezhinka.github.io/img/Countrys.png)
 
