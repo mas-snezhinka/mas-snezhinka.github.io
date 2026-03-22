@@ -2,7 +2,7 @@
 Реализуемый при поддержке **Министерства науки и высшего образования РФ**, **Министерства РФ по развитию Дальнего Востока и Арктики**, а также **Правительства Ямало-Ненецкого автономного округа** **(ЯНАО)**. <br>
 На международном уровне проект изначально продвигался через **Арктический совет**, а сейчас активно развивается в рамках **научно-технологического сотрудничества стран БРИКС+**.
 
-  [Unigine 2 SIM 3D Module](https://unigine.com/ru/products/sim/use-cases/)
+ [Unigine 2 SIM 3D Module](https://unigine.com/ru/products/sim/use-cases/)
   <br>
   
  ![](https://mas-snezhinka.github.io/img/unigine_vehicles.jpg)
@@ -21,7 +21,8 @@
  ![](https://mas-snezhinka.github.io/img/vezdehod.png)
  ![](https://mas-snezhinka.github.io/img/vodorod_water.png)
  ![](https://mas-snezhinka.github.io/img/vision.png)
+ ![](https://mas-snezhinka.github.io/img/rusak_snowbike.png)
 
-![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
-![](https://mas-snezhinka.github.io/img/Countrys.png)
+ ![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
+ ![](https://mas-snezhinka.github.io/img/Countrys.png)
 
