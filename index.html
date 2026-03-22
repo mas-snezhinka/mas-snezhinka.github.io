@@ -495,4 +495,196 @@
                             desc: 'Имитация работы фильтров, обратного осмоса, биологической очистки. Отображение качества воды в реальном времени.',
                             countries: ['ru']
                         },
-             
+                        {
+                            name: 'Центральный пост управления (ЦПУ)',
+                            desc: 'Единый дашборд для мониторинга всех систем станции. Интерактивные схемы, управление нагрузкой, аварийные уведомления.',
+                            countries: ['ru']
+                        },
+                        {
+                            name: 'Серверная и узел связи',
+                            desc: 'Визуализация стоек, систем охлаждения, сетевых маршрутов. Интеграция с облачной инфраструктурой VK.',
+                            countries: ['ru', 'sg']
+                        },
+                        {
+                            name: 'Складские помещения (ЗИП, расходные материалы)',
+                            desc: 'Цифровой учёт запасов, система управления складом (WMS), отображение остатков и сроков годности.',
+                            countries: ['ru']
+                        }
+                    ]
+                },
+                {
+                    title: 'Хозяйственный блок',
+                    items: [
+                        {
+                            name: 'Участок водоподготовки и водоочистки',
+                            desc: 'Симуляция предварительной очистки, умягчения, обеззараживания. Контроль параметров в реальном времени.',
+                            countries: ['ru']
+                        },
+                        {
+                            name: 'Участок утилизации и переработки ТБО',
+                            desc: 'Моделирование сортировки, прессования, пиролиза. Экологические показатели.',
+                            countries: ['ru']
+                        },
+                        {
+                            name: 'Прачечный комплекс',
+                            desc: 'Автоматизация процессов стирки, сушки, контроль расхода воды и энергии.',
+                            countries: ['ru']
+                        }
+                    ]
+                },
+                {
+                    title: 'Внешняя инфраструктура — энергокомплекс',
+                    items: [
+                        {
+                            name: 'Ветропарк (поле ветроэнергетических установок)',
+                            desc: 'Детализированные модели ВЭУ с вращающимися лопастями, симуляция выработки в зависимости от ветра, интеграция с метеостанцией.',
+                            countries: ['ru', 'cn']
+                        },
+                        {
+                            name: 'Солнечная ферма (фотоэлектрические панели)',
+                            desc: 'Модели панелей с отслеживанием солнца, расчёт генерации по углу наклона и освещённости.',
+                            countries: ['ae', 'cn']
+                        },
+                        {
+                            name: 'Водородная станция (хранилища сжатого водорода)',
+                            desc: 'Визуализация криогенных резервуаров, систем безопасности, заправочных колонок.',
+                            countries: ['ru', 'sa']
+                        },
+                        {
+                            name: 'Резервный дизель-генераторный узел',
+                            desc: 'Модель работы ДГУ в автономном режиме, отображение уровня топлива и аварийных сценариев.',
+                            countries: ['ru']
+                        }
+                    ]
+                },
+                {
+                    title: 'Транспортно-логистический узел',
+                    items: [
+                        {
+                            name: 'Вертолётная площадка',
+                            desc: '3D-сцена с вертолётом (модель Ми-8 или аналоги), симуляция взлёта/посадки, управление светосигнальным оборудованием.',
+                            countries: ['ru']
+                        },
+                        {
+                            name: 'Дронопорт (инфраструктура для БАС)',
+                            desc: 'Модели зарядных станций, ангаров для дронов, симуляция полётных заданий, автономная навигация.',
+                            countries: ['cn', 'ru']
+                        },
+                        {
+                            name: 'Тёплый ангар для спецтехники (вездеходы, снегоходы)',
+                            desc: 'Цифровые двойники вездеходов RUSAK, снегоходов, системы диагностики и технического обслуживания.',
+                            countries: ['ru']
+                        },
+                        {
+                            name: 'Открытые площадки для хранения крупногабаритных грузов',
+                            desc: 'Планировка складирования, учёт техники, визуализация грузовых операций.',
+                            countries: ['ru']
+                        }
+                    ]
+                },
+                {
+                    title: 'Испытательный полигон',
+                    items: [
+                        {
+                            name: 'Площадка для натурных испытаний материалов и конструкций',
+                            desc: 'Виртуальные стенды для тестирования новых материалов в условиях Арктики (мороз, ветер, снеговая нагрузка).',
+                            countries: ['ru', 'no']
+                        },
+                        {
+                            name: 'Метеорологическая площадка',
+                            desc: 'Отображение реальных данных с датчиков, визуализация погодных явлений, долгосрочное моделирование климата.',
+                            countries: ['ru', 'is']
+                        }
+                    ]
+                }
+            ];
+
+            const container = document.getElementById('locationsAccordion');
+            if (!container) return;
+
+            // Функция рендеринга флагов
+            function renderFlags(countryCodes) {
+                if (!countryCodes || countryCodes.length === 0) return '';
+                return `<div class="location-flags">${countryCodes.map(code => `
+                    <span class="flag-item">
+                        <span class="fi fi-${code}"></span>
+                        <span>${code.toUpperCase()}</span>
+                    </span>
+                `).join('')}</div>`;
+            }
+
+            locationSections.forEach(section => {
+                const card = document.createElement('div');
+                card.className = 'accordion-card';
+
+                // Заголовок
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+
+                const logoWrap = document.createElement('div');
+                logoWrap.className = 'logo-wrap-accordion';
+                logoWrap.innerHTML = `
+                    <div class="hex-header-spacer">
+                        <div class="hex-header-p1">
+                            <div class="hex-header-w1">
+                                <div class="hex-header-p2">
+                                    <div class="hex-header-inner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'accordion-title-text';
+                titleSpan.textContent = section.title;
+
+                const arrow = document.createElement('div');
+                arrow.className = 'accordion-arrow';
+                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+                header.appendChild(logoWrap);
+                header.appendChild(titleSpan);
+                header.appendChild(arrow);
+
+                // Контент
+                const content = document.createElement('div');
+                content.className = 'accordion-content';
+
+                const list = document.createElement('ul');
+                list.className = 'location-list';
+
+                section.items.forEach(item => {
+                    const li = document.createElement('li');
+                    // Название с иконкой
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'location-name';
+                    nameDiv.innerHTML = `<i class="fas fa-angle-right"></i> ${item.name}`;
+                    li.appendChild(nameDiv);
+
+                    // Блок деталей (описание + флаги)
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'location-details';
+                    detailsDiv.innerHTML = `
+                        <div class="location-desc">${item.desc}</div>
+                        ${renderFlags(item.countries)}
+                    `;
+                    li.appendChild(detailsDiv);
+
+                    list.appendChild(li);
+                });
+
+                content.appendChild(list);
+                card.appendChild(header);
+                card.appendChild(content);
+                container.appendChild(card);
+
+                // Клик по заголовку
+                header.addEventListener('click', () => {
+                    card.classList.toggle('active');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
