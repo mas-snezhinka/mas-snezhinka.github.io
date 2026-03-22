@@ -10,6 +10,7 @@
  ![](https://blockchainaccreditive.github.io/css/price2.jpg)
  ![](https://mas-snezhinka.github.io/img/yanao_gov.png)
  ![](https://mas-snezhinka.github.io/img/yanao_government.png)
+ ![](https://mas-snezhinka.github.io/img/vr_yanao.jpg)
  ![](https://comiccon2025.github.io/img/snowflake/lIdar.jpg)
  ![](https://mas-snezhinka.github.io/img/snow_drone.jpg)
  ![](https://comiccon2025.github.io/img/snowflake/underwater_1.jpg)
