@@ -5,7 +5,7 @@
  [Unigine 2 SIM 3D Module](https://unigine.com/ru/products/sim/use-cases/)
   <br>
 
- ![](https://mas-snezhinka.github.io/img%20/peric_hydrogen.png)
+ ![](https://mas-snezhinka.github.io/img/peric_hydrogen.png)
  ![](https://mas-snezhinka.github.io/img/GNPC_ARCTIC.png)
  ![](https://qfoldit.github.io/img/posters/vkPlay_card.png)
  ![](https://mas-snezhinka.github.io/img/unigine_vehicles.jpg)
