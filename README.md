@@ -1,5 +1,6 @@
-<a href="https://arctic-mipt.com/" target="blank">**МАС «Снежинка»**</a> — это проект <a href="https://arctic-council.org/projects/arctic-hydrogen-energy-applications-and-demonstrations-ahead/" target="blank">**международной**</a> научной станции. <br>
-Реализуемый <a href="https://mipt.ru/" target="blank">**МФТИ**</a> при поддержке **Министерства науки и высшего образования РФ**, **Министерства РФ по развитию Дальнего Востока и Арктики**, а также **Правительства Ямало-Ненецкого автономного округа** **(ЯНАО)**. <br> <br>
+<a href="https://arctic-mipt.com/" target="blank">**МАС «Снежинка»**</a> — это Реализуемый <a href="https://mipt.ru/" target="blank">**МФТИ**</a> проект <a href="https://arctic-council.org/projects/arctic-hydrogen-energy-applications-and-demonstrations-ahead/" target="blank">**международной**</a> научной станции.
+
+При поддержке **Министерства науки и высшего образования РФ**, **Министерства РФ по развитию Дальнего Востока и Арктики**, а также **Правительства Ямало-Ненецкого автономного округа** **(ЯНАО)**. <br> <br>
 На международном уровне проект изначально продвигается через <a href="https://arctic-council.org/projects/arctic-hydrogen-energy-applications-and-demonstrations-ahead/" target="blank">**Арктический совет**</a>, а сейчас так же активно развивается в рамках <a href="https://infobrics.org/" target="blank">**научно-технологического сотрудничества стран БРИКС+**</a>.
 
 <a href="https://arctic-mipt.com/" target="blank">**МАС «Снежинка»**</a> — это созданный на Российском движке [(Unigine 2 SIM 3D Module)](https://unigine.com/ru/products/sim/use-cases/) многопользовательский научно-исследовательский симулятор. Рзмещённый на <a href="https://vkplay.ru/" target="blank">**VK Play**</a>.
