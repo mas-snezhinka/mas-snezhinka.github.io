@@ -1,3 +1,5 @@
+![](https://mas-snezhinka.github.io/img/snowflake_branding_screen.png)
+
 <a href="https://arctic-mipt.com/" target="blank">**МАС «Снежинка»**</a> — это реализуемый <a href="https://mipt.ru/" target="blank">**МФТИ**</a> проект <a href="https://arctic-council.org/projects/arctic-hydrogen-energy-applications-and-demonstrations-ahead/" target="blank">**международной**</a> научной станции и многопользовательский научно-исследовательский симулятор от <a href="https://vkplay.ru/" target="blank">**VK Play**</a> на Российском движке [Unigine 2 SIM](https://unigine.com/ru/products/sim/use-cases/).
 
 При поддержке **Министерства науки и высшего образования РФ**, **Министерства РФ по развитию Дальнего Востока и Арктики**, а также **Правительства Ямало-Ненецкого автономного округа** **(ЯНАО)**. <br> <br>
