@@ -6,10 +6,10 @@
 На международном уровне проект изначально продвигается через <a href="https://arctic-council.org/projects/arctic-hydrogen-energy-applications-and-demonstrations-ahead/" target="blank">**Арктический совет**</a>, а сейчас так же активно развивается в рамках <a href="https://infobrics.org/" target="blank">**научно-технологического сотрудничества стран БРИКС+**</a>.
 
  ![](https://mas-snezhinka.github.io/img/unigine_vehicles.jpg)
- ![](https://mas-snezhinka.github.io/img/peric_hydrogen.png)
- ![](https://mas-snezhinka.github.io/img/GNPC_ARCTIC.png)
  ![](https://qfoldit.github.io/img/posters/vkPlay_card.png)
- 
+ ![](https://mas-snezhinka.github.io/img/peric_hydrogen.png)
+
+ ![](https://mas-snezhinka.github.io/img/GNPC_ARCTIC.png)
  ![](https://refoldit.github.io/img/snowflake/render/trucks_simulator.png)
  ![](https://blockchainaccreditive.github.io/css/price2.jpg)
  ![](https://mas-snezhinka.github.io/img/yanao_gov.png)
