@@ -29,6 +29,7 @@
  ![](https://mas-snezhinka.github.io/img/rusak_snowbike.png)
 
  ![](https://mas-snezhinka.github.io/img/arctic_council_blue.png)
+ ![](https://mas-snezhinka.github.io/img/brics-logo.png)
  ![](https://mas-snezhinka.github.io/img/Countrys.png)
  ![](https://mas-snezhinka.github.io/img/jnir_international.jpg)
  ![](https://mas-snezhinka.github.io/img/GREEN_TRANSITION.png)
