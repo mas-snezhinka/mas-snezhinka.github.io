@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>Снежинка · цифровой двойник | qFoldIT</title>
+    <!-- фавикон VK Play -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg width='36' height='36' viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cg clip-path='url(%23clip0_124_10523)'%3e%3cpath d='M18.756 0C26.892 0 30.96 0 33.48 2.52C36 5.04 36 9.108 36 17.244V18.756C36 26.892 36 30.96 33.48 33.48C30.96 36 26.892 36 18.756 36H17.244C9.108 36 5.04 36 2.52 33.48C0 30.96 0 26.892 0 18.756V17.244C0 9.108 0 5.04 2.52 2.52C5.04 0 9.108 0 17.244 0H18.756Z' fill='%230077FF'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M35.8956 10.1542C36 12.0999 36 14.4283 36 17.2439V17.244V18.756V18.756C36 20.9229 36 22.8013 35.9524 24.4387H0.0476112C0 22.8013 0 20.9229 0 18.756V17.244C0 14.4283 0 12.0999 0.104447 10.1542H35.8956ZM0.0474971 24.4394L0.0479452 24.4547C4.76004 26.7552 11.0876 28.1568 17.9898 28.1568C24.8976 28.1568 31.2388 26.7487 35.9521 24.4449L35.9522 24.4394H0.0474971Z' fill='%230009B4'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M25.0373 16.5811C24.1462 16.5811 23.4239 17.3195 23.4239 18.2304C23.4239 19.1412 24.1462 19.8796 25.0373 19.8796C25.9284 19.8796 26.6507 19.1412 26.6507 18.2304C26.6507 17.3195 25.9284 16.5811 25.0373 16.5811ZM19.845 18.2304C19.845 15.299 22.1697 12.9227 25.0373 12.9227C27.9049 12.9227 30.2296 15.299 30.2296 18.2304C30.2296 21.1617 27.9049 23.5381 25.0373 23.5381C22.1697 23.5381 19.845 21.1617 19.845 18.2304Z' fill='white'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.1827 15.8495L8.48861 13.1555L5.93991 15.7042L8.63398 18.3982L5.94007 21.0921L8.48877 23.6408L11.1827 20.9469L13.8765 23.6408L16.4252 21.0921L13.7314 18.3982L16.4254 15.7042L13.8767 13.1555L11.1827 15.8495Z' fill='white'/%3e%3c/g%3e%3cdefs%3e%3cclipPath id='clip0_124_10523'%3e%3crect width='36' height='36' fill='white'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e">
+    <!-- шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- flag-icons для флагов стран -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.11.0/css/flag-icons.min.css">
     <style>
+        /* === ОСНОВНЫЕ ЦВЕТА === */
         :root {
             --vk-blue: #005ff9;
             --vk-light: #00b2ff;
@@ -18,6 +23,8 @@
             --bg-dark: #0A0C0F;
             --surface-dark: #1f1f1f;
         }
+
+        /* Скрываем скроллбар */
         ::-webkit-scrollbar {
             width: 0;
             background: transparent;
@@ -44,6 +51,8 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* --- ХЕДЕР --- */
         .page-header {
             padding: 20px 24px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -57,6 +66,8 @@
             color: white;
             letter-spacing: -0.02em;
         }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР (СКРОЛЛИНГ) --- */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -68,6 +79,8 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+
+        /* --- АККОРДЕОНЫ --- */
         .locations-grid {
             display: flex;
             flex-direction: column;
@@ -90,6 +103,8 @@
             border-color: rgba(0, 119, 255, 0.3);
             box-shadow: 0 20px 30px -10px #0077ff33;
         }
+
+        /* --- ЗАГОЛОВОК АККОРДЕОНА (стиль футера) --- */
         .accordion-header {
             background-color: var(--vk-blue);
             position: relative;
@@ -99,6 +114,8 @@
             border-radius: 8px 8px 0 0;
             overflow: hidden;
         }
+
+        /* Белая полоса сверху */
         .accordion-header::before {
             content: '';
             position: absolute;
@@ -110,6 +127,8 @@
             z-index: 2;
             pointer-events: none;
         }
+
+        /* Полосатая нижняя полоска */
         .accordion-header::after {
             content: '';
             position: absolute;
@@ -121,6 +140,8 @@
             z-index: 2;
             pointer-events: none;
         }
+
+        /* Ромб (логотип) */
         .logo-wrap-accordion {
             position: absolute;
             left: 20px;
@@ -170,6 +191,8 @@
             background: var(--vk-light);
             clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
         }
+
+        /* Текст заголовка */
         .accordion-title-text {
             position: absolute;
             left: 100px;
@@ -185,6 +208,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* Стрелка справа */
         .accordion-arrow {
             position: absolute;
             right: 24px;
@@ -200,6 +225,8 @@
         .accordion-card.active .accordion-arrow {
             transform: translateY(-50%) rotate(180deg);
         }
+
+        /* Контент аккордеона */
         .accordion-content {
             max-height: 0;
             padding: 0 28px;
@@ -246,6 +273,8 @@
             margin-top: 3px;
             min-width: 20px;
         }
+
+        /* Детали: описание и флаги */
         .location-details {
             margin-left: 32px;
             font-size: 0.85rem;
@@ -285,6 +314,8 @@
             border-radius: 2px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
+
+        /* --- СТИЛИ ДЛЯ SKETCHFAB ВСТРОЙКИ --- */
         .sketchfab-wrapper {
             position: relative;
             width: 100%;
@@ -325,6 +356,40 @@
             text-decoration: underline;
             color: #00b2ff;
         }
+
+        /* Для дополнительных встраиваемых блоков, которые приходят как готовый HTML */
+        .sketchfab-embed-wrapper {
+            margin-top: 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sketchfab-embed-wrapper iframe {
+            display: block;
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+        .sketchfab-embed-wrapper p {
+            font-size: 12px;
+            font-weight: normal;
+            margin: 0;
+            padding: 6px 10px;
+            color: #9aa1b0;
+            background: rgba(10, 12, 15, 0.9);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .sketchfab-embed-wrapper p a {
+            color: #1CAAD9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Адаптация */
         @media (max-width: 700px) {
             .page-header {
                 padding: 16px 20px;
@@ -368,7 +433,8 @@
                 margin-left: 24px;
                 padding: 8px 12px;
             }
-            .sketchfab-wrapper iframe {
+            .sketchfab-wrapper iframe,
+            .sketchfab-embed-wrapper iframe {
                 height: 300px;
             }
         }
@@ -382,7 +448,8 @@
                 font-size: 16px;
                 max-width: calc(100% - 130px);
             }
-            .sketchfab-wrapper iframe {
+            .sketchfab-wrapper iframe,
+            .sketchfab-embed-wrapper iframe {
                 height: 240px;
             }
         }
@@ -402,7 +469,7 @@
     <script>
         (function() {
             // Расширенные данные по локациям: для каждого пункта — описание и страны (коды для флагов)
-            // Добавлено поле sketchfabUrl (необязательное) для встраивания 3D-моделей
+            // Поле sketchfabUrl – одна 3D-модель, extraSketchfabHtml – дополнительный готовый HTML для вставки
             const locationSections = [
                 {
                     title: 'Жилые и общественные модули',
@@ -410,7 +477,7 @@
                         {
                             name: 'Жилые блоки: индивидуальные каюты для учёных и персонала (80 мест)',
                             desc: 'Визуализация интерьеров, систем климат-контроля, интеграция с системой управления станцией. Создание интерактивных панелей мониторинга.',
-                            countries: ['ru'] // МФТИ / Минстрой РФ
+                            countries: ['ru']
                         },
                         {
                             name: 'Кухонно-столовый блок — пространство для приготовления и приёма пищи',
@@ -440,12 +507,12 @@
                         {
                             name: 'Лаборатория водородной энергетики (электролиз, топливные элементы)',
                             desc: 'Детальная 3D-модель электролизёров и топливных элементов, симуляция рабочих циклов, отображение реальных параметров (давление, температура, КПД).',
-                            countries: ['ru', 'cn'] // ГК «Инэнерджи» + Китай (возможно)
+                            countries: ['ru', 'cn']
                         },
                         {
                             name: 'Лаборатория возобновляемых источников энергии (ВИЭ)',
                             desc: 'Визуализация работы ветряков и солнечных панелей, прогнозирование генерации на основе метеоданных, управление распределением энергии.',
-                            countries: ['ru', 'ae', 'cn'] // ОАЭ, Китай
+                            countries: ['ru', 'ae', 'cn']
                         },
                         {
                             name: 'Лаборатория систем накопления энергии',
@@ -465,13 +532,22 @@
                         {
                             name: 'Лаборатория систем жизнеобеспечения и замкнутых циклов',
                             desc: 'Симуляция систем водоочистки, регенерации воздуха, утилизации отходов. Интерактивные панели управления.',
-                            countries: ['ru', 'de'] // МГТУ им. Баумана, возможные партнёры
+                            countries: ['ru', 'de']
                         },
                         {
                             name: 'Лаборатория биотехнологий и синтетической биологии',
                             desc: 'Моделирование биореакторов, симуляция процессов культивирования микроорганизмов, интеграция с модулем qFoldIT для белкового дизайна.',
                             countries: ['br', 'in', 'ru'],
-                            sketchfabUrl: 'https://sketchfab.com/models/f88ccddd996e4c49808e738c2685b9c3/embed?ui_watermark_link=0&ui_watermark=0'
+                            sketchfabUrl: 'https://sketchfab.com/models/f88ccddd996e4c49808e738c2685b9c3/embed?ui_watermark_link=0&ui_watermark=0',
+                            extraSketchfabHtml: `
+                            <div class="sketchfab-embed-wrapper">
+                                <iframe title="Invert Light Microscope | Low poly | PBR" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/029ed9bc23c647cda29c5ef94ace3dfc/embed"></iframe>
+                                <p>
+                                    <a href="https://sketchfab.com/3d-models/invert-light-microscope-low-poly-pbr-029ed9bc23c647cda29c5ef94ace3dfc?utm_medium=embed&utm_campaign=share-popup&utm_content=029ed9bc23c647cda29c5ef94ace3dfc" target="_blank" rel="nofollow">Invert Light Microscope | Low poly | PBR</a>
+                                    by <a href="https://sketchfab.com/nakedsingularity?utm_medium=embed&utm_campaign=share-popup&utm_content=029ed9bc23c647cda29c5ef94ace3dfc" target="_blank" rel="nofollow">Naked Singularity Studio</a>
+                                    on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=029ed9bc23c647cda29c5ef94ace3dfc" target="_blank" rel="nofollow">Sketchfab</a>
+                                </p>
+                            </div>`
                         },
                         {
                             name: 'Лаборатория новых материалов',
@@ -501,7 +577,7 @@
                         {
                             name: 'Водородный комплекс (электролизеры, хранение водорода, топливные элементы)',
                             desc: 'Полная симуляция цикла: электролиз → компримирование → хранение → выработка энергии. Визуализация безопасности и аварийных сценариев.',
-                            countries: ['ru', 'sa'] // ИФТТ РАН, Саудовская Аравия (водородные технологии)
+                            countries: ['ru', 'sa']
                         },
                         {
                             name: 'Аккумуляторная зона (накопители энергии)',
@@ -631,10 +707,9 @@
                 `).join('')}</div>`;
             }
 
-            // Функция рендеринга 3D-встройки Sketchfab
+            // Функция рендеринга базовой 3D-встройки Sketchfab
             function renderSketchfabEmbed(url) {
                 if (!url) return '';
-                // Извлекаем ID модели из URL, чтобы сделать ссылку на страницу модели
                 const modelIdMatch = url.match(/models\/([a-zA-Z0-9]+)/);
                 const modelId = modelIdMatch ? modelIdMatch[1] : '';
                 const modelPageUrl = modelId ? `https://sketchfab.com/3d-models/medical-laboratory-${modelId}?utm_medium=embed&utm_campaign=share-popup&utm_content=${modelId}` : '#';
@@ -699,13 +774,14 @@
                     nameDiv.innerHTML = `<i class="fas fa-angle-right"></i> ${item.name}`;
                     li.appendChild(nameDiv);
 
-                    // Блок деталей (описание + флаги + возможно 3D-модель)
+                    // Блок деталей (описание + флаги + 3D-модели)
                     const detailsDiv = document.createElement('div');
                     detailsDiv.className = 'location-details';
                     detailsDiv.innerHTML = `
                         <div class="location-desc">${item.desc}</div>
                         ${renderFlags(item.countries)}
                         ${renderSketchfabEmbed(item.sketchfabUrl)}
+                        ${item.extraSketchfabHtml || ''}
                     `;
                     li.appendChild(detailsDiv);
 
