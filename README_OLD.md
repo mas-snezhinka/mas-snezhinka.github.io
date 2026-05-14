@@ -36,6 +36,7 @@
 
 -->
 
+![](https://qfoldit.github.io/img/380.png)
 ![](https://qfoldit.github.io/img/posters/genotek_peoples.png)
 ![](https://qfoldit.github.io/img/posters/genomics_vr.png)
 ![](https://qfoldit.github.io/img/posters/quantum_sirius.png)
