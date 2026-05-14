@@ -37,8 +37,8 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 480px;
-            height: 418px;
+            width: 855px;
+            height: 480px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
             display: inline-block;
@@ -61,11 +61,6 @@
             pointer-events: auto;
             filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
             z-index: 10;
-        }
-
-        /* Скрытая распорка (не используется, так как размеры фиксированы) */
-        .spacer {
-            display: none;
         }
 
         /* Абсолютные слои внутри каждой рамки */
@@ -142,35 +137,28 @@
         }
 
         /* Адаптация для маленьких экранов */
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             .frame-wrapper--main {
-                top: 12px;
-                left: 12px;
                 width: auto;
                 height: auto;
                 max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 24px - 250px - 20px); /* оставляем место для нижней рамки */
+                max-height: calc(100vh - 40px - 250px - 20px);
+                top: 12px;
+                left: 12px;
             }
             .frame-wrapper--main .text-content {
                 padding: 14px 16px;
                 font-size: clamp(1.2rem, 5vw, 1.8rem);
                 line-height: 1.3;
             }
-
             .frame-wrapper--bottom-small {
                 bottom: 12px;
                 left: 12px;
                 height: 200px;
-                max-width: calc(100vw - 24px);
-            }
-            .frame-wrapper--bottom-small .text-content {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-                line-height: 1.35;
             }
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 480px) {
             .frame-wrapper--main {
                 max-height: 45vh;
             }
