@@ -37,8 +37,8 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 860px;
-            height: 430px;
+            width: 855px;
+            height: 480px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
             display: inline-block;
@@ -53,7 +53,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            height: 180px;                    /* немного увеличил высоту */
+            height: 220px;                    /* увеличена высота для крупного шрифта */
             width: auto;
             max-width: calc(100vw - 40px);
             display: inline-block;
@@ -72,9 +72,9 @@
         }
 
         .frame-wrapper--bottom-small .spacer {
-            padding: 10px 14px;
-            font-size: clamp(0.9rem, 1.8vw, 1.1rem);   /* шрифт крупнее */
-            line-height: 1.4;
+            padding: 16px 18px;              /* увеличены отступы */
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);  /* шрифт заметно крупнее */
+            line-height: 1.45;
         }
 
         /* Абсолютные слои внутри каждой рамки */
@@ -143,11 +143,11 @@
             line-height: 1.4;
         }
 
-        /* ── НИЖНЯЯ РАМКА (теперь шрифт крупнее) ── */
+        /* ── НИЖНЯЯ РАМКА (крупный шрифт) ── */
         .frame-wrapper--bottom-small .text-content {
-            padding: 10px 14px;
-            font-size: clamp(0.9rem, 1.8vw, 1.1rem);  /* заметно больше */
-            line-height: 1.4;
+            padding: 16px 18px;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);  /* крупнее */
+            line-height: 1.45;
         }
 
         /* Адаптация для маленьких экранов */
@@ -156,7 +156,7 @@
                 width: auto;
                 height: auto;
                 max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 40px - 180px - 20px);
+                max-height: calc(100vh - 40px - 220px - 20px);
                 top: 12px;
                 left: 12px;
             }
@@ -168,7 +168,7 @@
             .frame-wrapper--bottom-small {
                 bottom: 12px;
                 right: 12px;
-                height: 160px;
+                height: 200px;
             }
         }
 
@@ -177,7 +177,7 @@
                 max-height: 45vh;
             }
             .frame-wrapper--bottom-small {
-                height: 140px;
+                height: 180px;
             }
         }
     </style>
