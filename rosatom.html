@@ -17,10 +17,10 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #000;
+            background: #000; /* резервный фон */
         }
 
-        /* Полноэкранное фоновое изображение */
+        /* Полноэкранное hero-изображение */
         .hero-bg {
             position: fixed;
             top: 0;
@@ -28,7 +28,8 @@
             width: 100vw;
             height: 100vh;
             object-fit: cover;
-            z-index: -1;
+            z-index: 1;          /* поверх фона, но под рамкой */
+            display: block;
         }
 
         /* Рамка в левом верхнем углу */
@@ -41,16 +42,16 @@
             max-height: calc(100vh - 40px);
             overflow: hidden;
             pointer-events: auto;
-            z-index: 10;
-            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
+            z-index: 10;         /* поверх изображения */
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
         }
 
         /* Скрытая «распорка» задаёт натуральные размеры */
         .spacer {
             visibility: hidden;
-            padding: 12px 16px;
+            padding: 10px 14px;
             font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.55;
+            line-height: 1.5;
             white-space: pre-wrap;
             word-break: break-word;
             font-family: inherit;
@@ -79,32 +80,32 @@
             z-index: 2;
         }
 
-        /* Стеклянный фон для текста */
+        /* Стеклянный (glassmorphism) фон для текста */
         .text-bg {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(14px) saturate(120%);
-            -webkit-backdrop-filter: blur(14px) saturate(120%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);   /* почти прозрачный */
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             z-index: 3;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
         }
 
-        /* Контейнер текста с прокруткой */
+        /* Контейнер текста с внутренней прокруткой */
         .text-content {
             width: 100%;
             height: 100%;
             overflow-y: auto;
             color: #ffffff;
             font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.55;
+            line-height: 1.5;
             font-weight: 400;
             letter-spacing: 0.3px;
-            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-            padding: 12px 16px;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+            padding: 10px 14px;               /* минимум пустого пространства */
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
         }
@@ -122,7 +123,7 @@
             border-radius: 4px;
         }
 
-        /* Адаптация под маленькие экраны */
+        /* Адаптация для мобильных */
         @media (max-width: 480px) {
             .frame-wrapper {
                 top: 12px;
@@ -135,18 +136,20 @@
             .text-content {
                 padding: 8px 12px;
                 font-size: 0.85rem;
-                line-height: 1.45;
+                line-height: 1.4;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Hero-изображение -->
     <img class="hero-bg"
-    src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
-    alt="Rosatom Quantum Poster" />
+         src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
+         alt="Rosatom Quantum Poster" />
 
+    <!-- Текстовая рамка -->
     <div class="frame-wrapper" id="frameWrapper">
-        <!-- Скрытая «распорка» определяет размеры -->
+        <!-- Распорка для расчёта размеров -->
         <div class="spacer" aria-hidden="true">
             «Развитие российских ИТ-технологий: от гейминга до квантового суверенитета.
             Напомним, что ранее Сергей Кириенко заявлял о важности компьютерных игр для
@@ -159,7 +162,7 @@
         <div class="border-outer" id="borderOuter"></div>
         <!-- Внутренняя граница -->
         <div class="border-inner" id="borderInner"></div>
-        <!-- Стеклянная подложка -->
+        <!-- Стеклянная подложка с текстом -->
         <div class="text-bg" id="textBg">
             <div class="text-content">
                 «Развитие российских ИТ-технологий: от гейминга до квантового суверенитета.
@@ -179,14 +182,15 @@
             const textBg = document.getElementById('textBg');
 
             // Параметры скосов и скруглений
-            const BEVEL = 20;          // размер скоса в пикселях
-            const RADIUS = 8;          // радиус скругления
-            const OUTER_WIDTH = 3;     // толщина внешней линии
+            const BEVEL = 20;          // размер скоса (px)
+            const RADIUS = 8;          // радиус скругления (px)
+            const OUTER_WIDTH = 3;     // толщина внешней линии рамки
             const GAP = 3;             // зазор между линиями
             const INNER_WIDTH = 3;     // толщина внутренней линии
             const OFFSET_INNER = OUTER_WIDTH;
             const OFFSET_BG = OUTER_WIDTH + GAP + INNER_WIDTH;
 
+            // Создаёт SVG path с заданным отступом off от краёв
             function createPath(w, h, off) {
                 if (w <= 0 || h <= 0) return '';
                 const maxOff = Math.min(w / 2, h / 2, 30);
@@ -199,7 +203,7 @@
                 const right = w - d;
                 const bottom = h - d;
 
-                // path: скос слева вверху, скос справа внизу, остальные скруглены
+                // path: скос слева вверху, скос справа внизу, скругления на остальных углах
                 const path = [
                     `M ${left} ${top + bv}`,
                     `L ${left + bv} ${top}`,
@@ -215,6 +219,7 @@
                 return path;
             }
 
+            // Применяет clip-path ко всем слоям
             function updateClipPaths() {
                 const rect = wrapper.getBoundingClientRect();
                 const w = rect.width;
@@ -226,12 +231,14 @@
                 textBg.style.clipPath = `path('${createPath(w, h, OFFSET_BG)}')`;
             }
 
+            // Пересчёт при загрузке и изменении размера окна
             window.addEventListener('load', updateClipPaths);
             window.addEventListener('resize', updateClipPaths);
 
+            // Отслеживание изменения размеров wrapper (если контент изменится)
             const observer = new ResizeObserver(updateClipPaths);
             observer.observe(wrapper);
         })();
     </script>
 </body>
-</html>  
+</html>
