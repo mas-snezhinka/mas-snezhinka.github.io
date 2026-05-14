@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROSATOM</title>
+    <title>Росатом – квантовое лидерство</title>
     <style>
         * {
             margin: 0;
@@ -37,8 +37,8 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 860px;
-            height: 430px;
+            width: 855px;
+            height: 480px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
             display: inline-block;
@@ -53,7 +53,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            height: 220px;                    /* увеличена высота для крупного шрифта */
+            height: 260px;                    /* ещё больше высота */
             width: auto;
             max-width: calc(100vw - 40px);
             display: inline-block;
@@ -72,8 +72,8 @@
         }
 
         .frame-wrapper--bottom-small .spacer {
-            padding: 16px 18px;              /* увеличены отступы */
-            font-size: clamp(1.1rem, 2.5vw, 1.6rem);  /* шрифт заметно крупнее */
+            padding: 18px 20px;               /* увеличены отступы */
+            font-size: clamp(1.2rem, 2.8vw, 1.8rem);  /* шрифт ещё крупнее */
             line-height: 1.45;
         }
 
@@ -145,8 +145,8 @@
 
         /* ── НИЖНЯЯ РАМКА (крупный шрифт) ── */
         .frame-wrapper--bottom-small .text-content {
-            padding: 16px 18px;
-            font-size: clamp(1.1rem, 2.5vw, 1.6rem);  /* крупнее */
+            padding: 18px 20px;
+            font-size: clamp(1.2rem, 2.8vw, 1.8rem);   /* крупнее */
             line-height: 1.45;
         }
 
@@ -156,7 +156,7 @@
                 width: auto;
                 height: auto;
                 max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 40px - 220px - 20px);
+                max-height: calc(100vh - 40px - 260px - 20px);
                 top: 12px;
                 left: 12px;
             }
@@ -168,7 +168,7 @@
             .frame-wrapper--bottom-small {
                 bottom: 12px;
                 right: 12px;
-                height: 200px;
+                height: 240px;
             }
         }
 
@@ -177,7 +177,7 @@
                 max-height: 45vh;
             }
             .frame-wrapper--bottom-small {
-                height: 180px;
+                height: 220px;
             }
         }
     </style>
@@ -186,6 +186,151 @@
     <img class="hero-bg"
          src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
          alt="Rosatom Quantum Poster" />
+
+    <!-- ВЕРХНЯЯ рамка (основная) -->
+    <div class="frame-wrapper--main" id="frameMain">
+        <div class="border-outer" id="mainBorderOuter"></div>
+        <div class="border-inner" id="mainBorderInner"></div>
+        <div class="text-bg" id="mainTextBg">
+            <div class="text-content">
+                «От гейминга до квантового лидерства.
+                Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
+                формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
+                следующий шаг и призвал крупный бизнес включиться в создание квантового
+                программного обеспечения».
+            </div>
+        </div>
+    </div>
+
+    <!-- НИЖНЯЯ рамка (в правом нижнем углу) -->
+    <div class="frame-wrapper--bottom-small" id="frameSmall">
+        <!-- Скрытая распорка, задающая ширину рамки по содержимому -->
+        <div class="spacer" aria-hidden="true">
+            Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
+            строительства атомных электростанций и услуг по обогащению урана. Это единственная
+            в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
+            энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
+            эксплуатации.
+        </div>
+        <div class="border-outer" id="smallBorderOuter"></div>
+        <div class="border-inner" id="smallBorderInner"></div>
+        <div class="text-bg" id="smallTextBg">
+            <div class="text-content">
+                Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
+                строительства атомных электростанций и услуг по обогащению урана. Это единственная
+                в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
+                энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
+                эксплуатации.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Параметры скосов и скруглений
+            const BEVEL = 20;
+            const RADIUS = 8;
+            const OUTER_WIDTH = 3;
+            const GAP = 3;
+            const INNER_WIDTH = 3;
+            const OFFSET_INNER = OUTER_WIDTH;
+            const OFFSET_BG = OUTER_WIDTH + GAP + INNER_WIDTH;
+
+            // Создаёт SVG path для main-рамки (скос слева вверху и справа внизу)
+            function createPathMain(w, h, off) {
+                if (w <= 0 || h <= 0) return '';
+                const maxOff = Math.min(w / 2, h / 2, 30);
+                const d = Math.min(off, maxOff);
+                const bv = Math.min(BEVEL, (w - d * 2) / 2, (h - d * 2) / 2);
+                const r = Math.min(RADIUS, (w - d * 2) / 2, (h - d * 2) / 2);
+
+                const left = d;
+                const top = d;
+                const right = w - d;
+                const bottom = h - d;
+
+                return [
+                    `M ${left} ${top + bv}`,
+                    `L ${left + bv} ${top}`,
+                    `L ${right - r} ${top}`,
+                    `A ${r} ${r} 0 0 1 ${right} ${top + r}`,
+                    `L ${right} ${bottom - bv}`,
+                    `L ${right - bv} ${bottom}`,
+                    `L ${left + r} ${bottom}`,
+                    `A ${r} ${r} 0 0 1 ${left} ${bottom - r}`,
+                    `Z`
+                ].join(' ');
+            }
+
+            // Создаёт SVG path для small-рамки (скос слева внизу и справа вверху)
+            function createPathSmall(w, h, off) {
+                if (w <= 0 || h <= 0) return '';
+                const maxOff = Math.min(w / 2, h / 2, 30);
+                const d = Math.min(off, maxOff);
+                const bv = Math.min(BEVEL, (w - d * 2) / 2, (h - d * 2) / 2);
+                const r = Math.min(RADIUS, (w - d * 2) / 2, (h - d * 2) / 2);
+
+                const left = d;
+                const top = d;
+                const right = w - d;
+                const bottom = h - d;
+
+                return [
+                    // Начинаем с левого верхнего угла (скругление)
+                    `M ${left + r} ${top}`,
+                    // Верхняя сторона до правого верхнего скоса
+                    `L ${right - bv} ${top}`,
+                    // Скос правого верхнего угла (вниз-влево)
+                    `L ${right} ${top + bv}`,
+                    // Правая сторона до правого нижнего скругления
+                    `L ${right} ${bottom - r}`,
+                    // Дуга правого нижнего угла
+                    `A ${r} ${r} 0 0 1 ${right - r} ${bottom}`,
+                    // Нижняя сторона до левого нижнего скоса
+                    `L ${left + bv} ${bottom}`,
+                    // Скос левого нижнего угла (вверх-вправо)
+                    `L ${left} ${bottom - bv}`,
+                    // Левая сторона до левого верхнего скругления
+                    `L ${left} ${top + r}`,
+                    // Дуга левого верхнего угла
+                    `A ${r} ${r} 0 0 1 ${left + r} ${top}`,
+                    `Z`
+                ].join(' ');
+            }
+
+            // Настройка clip-path для одной рамки с указанием типа ('main' или 'small')
+            function setupFrame(wrapperId, outerId, innerId, bgId, type) {
+                const wrapper = document.getElementById(wrapperId);
+                const borderOuter = document.getElementById(outerId);
+                const borderInner = document.getElementById(innerId);
+                const textBg = document.getElementById(bgId);
+
+                const createPath = type === 'small' ? createPathSmall : createPathMain;
+
+                function update() {
+                    const rect = wrapper.getBoundingClientRect();
+                    const w = rect.width;
+                    const h = rect.height;
+                    if (w === 0 || h === 0) return;
+
+                    borderOuter.style.clipPath = `path('${createPath(w, h, 0)}')`;
+                    borderInner.style.clipPath = `path('${createPath(w, h, OFFSET_INNER)}')`;
+                    textBg.style.clipPath = `path('${createPath(w, h, OFFSET_BG)}')`;
+                }
+
+                window.addEventListener('load', update);
+                window.addEventListener('resize', update);
+                const observer = new ResizeObserver(update);
+                observer.observe(wrapper);
+            }
+
+            // Инициализация двух рамок
+            setupFrame('frameMain', 'mainBorderOuter', 'mainBorderInner', 'mainTextBg', 'main');
+            setupFrame('frameSmall', 'smallBorderOuter', 'smallBorderInner', 'smallTextBg', 'small');
+        })();
+    </script>
+</body>
+</html>
 
     <!-- ВЕРХНЯЯ рамка (основная) -->
     <div class="frame-wrapper--main" id="frameMain">
