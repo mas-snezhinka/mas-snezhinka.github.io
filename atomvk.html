@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Росатом</title>
+    <title>Росатом – квантовое лидерство</title>
     <style>
         * {
             margin: 0;
@@ -32,39 +32,43 @@
             display: block;
         }
 
-        /* Контейнер для всех рамок в левом верхнем углу */
-        .frames-container {
+        /* ===== ВЕРХНЯЯ РАМКА (левый верхний угол) ===== */
+        .frame-wrapper--main {
             position: fixed;
             top: 20px;
             left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            z-index: 10;
+            width: 480px;
+            height: 418px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
-            pointer-events: none;
-        }
-
-        /* Общие стили для каждой рамки */
-        .frame-wrapper {
-            position: relative;
             display: inline-block;
             overflow: hidden;
             pointer-events: auto;
             filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
-            width: fit-content;
+            z-index: 10;
         }
 
-        /* Скрытая распорка */
+        /* ===== НИЖНЯЯ РАМКА (левый нижний угол) ===== */
+        .frame-wrapper--bottom-small {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            height: 250px;
+            width: auto;
+            max-width: calc(100vw - 40px);
+            display: inline-block;
+            overflow: hidden;
+            pointer-events: auto;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+            z-index: 10;
+        }
+
+        /* Скрытая распорка (не используется, так как размеры фиксированы) */
         .spacer {
-            visibility: hidden;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-family: inherit;
+            display: none;
         }
 
-        /* Абсолютные слои */
+        /* Абсолютные слои внутри каждой рамки */
         .border-outer,
         .border-inner,
         .text-bg {
@@ -123,50 +127,55 @@
             border-radius: 4px;
         }
 
-        /* ── Первая рамка (основная) ── */
-        .frame-wrapper--main .spacer {
-            padding: 10px 14px;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.5;
-        }
+        /* ── ВЕРХНЯЯ РАМКА (увеличенный шрифт) ── */
         .frame-wrapper--main .text-content {
+            padding: 20px 22px;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            line-height: 1.4;
+        }
+
+        /* ── НИЖНЯЯ РАМКА (стандартный шрифт) ── */
+        .frame-wrapper--bottom-small .text-content {
             padding: 10px 14px;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.5;
-        }
-
-        /* ── Вторая рамка (поменьше) ── */
-        .frame-wrapper--small .spacer {
-            padding: 8px 12px;
-            font-size: clamp(0.75rem, 1.6vw, 0.9rem);
-            line-height: 1.45;
-        }
-        .frame-wrapper--small .text-content {
-            padding: 8px 12px;
             font-size: clamp(0.75rem, 1.6vw, 0.9rem);
             line-height: 1.45;
         }
 
-        /* Адаптация для мобильных */
-        @media (max-width: 480px) {
-            .frames-container {
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 600px) {
+            .frame-wrapper--main {
                 top: 12px;
                 left: 12px;
-                gap: 12px;
+                width: auto;
+                height: auto;
                 max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 24px);
+                max-height: calc(100vh - 24px - 250px - 20px); /* оставляем место для нижней рамки */
             }
-            .frame-wrapper--main .spacer,
             .frame-wrapper--main .text-content {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-                line-height: 1.4;
+                padding: 14px 16px;
+                font-size: clamp(1.2rem, 5vw, 1.8rem);
+                line-height: 1.3;
             }
-            .frame-wrapper--small .spacer,
-            .frame-wrapper--small .text-content {
-                padding: 6px 10px;
-                font-size: 0.75rem;
+
+            .frame-wrapper--bottom-small {
+                bottom: 12px;
+                left: 12px;
+                height: 200px;
+                max-width: calc(100vw - 24px);
+            }
+            .frame-wrapper--bottom-small .text-content {
+                padding: 8px 12px;
+                font-size: 0.8rem;
                 line-height: 1.35;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .frame-wrapper--main {
+                max-height: 45vh;
+            }
+            .frame-wrapper--bottom-small {
+                height: 180px;
             }
         }
     </style>
@@ -176,48 +185,32 @@
          src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
          alt="Rosatom Quantum Poster" />
 
-    <div class="frames-container">
-        <!-- Первая рамка -->
-        <div class="frame-wrapper frame-wrapper--main" id="frameMain">
-            <div class="spacer" aria-hidden="true">
+    <!-- ВЕРХНЯЯ рамка (основная) -->
+    <div class="frame-wrapper--main" id="frameMain">
+        <div class="border-outer" id="mainBorderOuter"></div>
+        <div class="border-inner" id="mainBorderInner"></div>
+        <div class="text-bg" id="mainTextBg">
+            <div class="text-content">
                 «Развитие российских ИТ-технологий: от гейминга до квантового лидерства.
                 Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
                 формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
                 следующий шаг и призвал крупный бизнес включиться в создание квантового
                 программного обеспечения».
             </div>
-            <div class="border-outer" id="mainBorderOuter"></div>
-            <div class="border-inner" id="mainBorderInner"></div>
-            <div class="text-bg" id="mainTextBg">
-                <div class="text-content">
-                    «Развитие российских ИТ-технологий: от гейминга до квантового лидерства.
-                    Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
-                    формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
-                    следующий шаг и призвал крупный бизнес включиться в создание квантового
-                    программного обеспечения».
-                </div>
-            </div>
         </div>
+    </div>
 
-        <!-- Вторая рамка (поменьше) -->
-        <div class="frame-wrapper frame-wrapper--small" id="frameSmall">
-            <div class="spacer" aria-hidden="true">
+    <!-- НИЖНЯЯ рамка (в левом нижнем углу) -->
+    <div class="frame-wrapper--bottom-small" id="frameSmall">
+        <div class="border-outer" id="smallBorderOuter"></div>
+        <div class="border-inner" id="smallBorderInner"></div>
+        <div class="text-bg" id="smallTextBg">
+            <div class="text-content">
                 Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
                 строительства атомных электростанций и услуг по обогащению урана. Это единственная
                 в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
                 энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
                 эксплуатации.
-            </div>
-            <div class="border-outer" id="smallBorderOuter"></div>
-            <div class="border-inner" id="smallBorderInner"></div>
-            <div class="text-bg" id="smallTextBg">
-                <div class="text-content">
-                    Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
-                    строительства атомных электростанций и услуг по обогащению урана. Это единственная
-                    в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
-                    энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
-                    эксплуатации.
-                </div>
             </div>
         </div>
     </div>
@@ -259,7 +252,7 @@
                 ].join(' ');
             }
 
-            // Настройка одной рамки
+            // Настройка clip-path для одной рамки
             function setupFrame(wrapperId, outerId, innerId, bgId) {
                 const wrapper = document.getElementById(wrapperId);
                 const borderOuter = document.getElementById(outerId);
