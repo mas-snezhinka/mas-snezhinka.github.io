@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Росатом</title>
+    <title>ROSATOM</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #000; /* резервный фон */
+            background: #000;
         }
 
         /* Полноэкранное hero-изображение */
@@ -28,36 +28,56 @@
             width: 100vw;
             height: 100vh;
             object-fit: cover;
-            z-index: 1;          /* поверх фона, но под рамкой */
+            z-index: 1;
             display: block;
         }
 
-        /* Рамка в левом верхнем углу */
-        .frame-wrapper {
+        /* ===== ВЕРХНЯЯ РАМКА (левый верхний угол) ===== */
+        .frame-wrapper--main {
             position: fixed;
             top: 20px;
             left: 20px;
-            display: inline-block;
+            width: 855px;
+            height: 480px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
+            display: inline-block;
             overflow: hidden;
             pointer-events: auto;
-            z-index: 10;         /* поверх изображения */
             filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+            z-index: 10;
         }
 
-        /* Скрытая «распорка» задаёт натуральные размеры */
+        /* ===== НИЖНЯЯ РАМКА (правый нижний угол) ===== */
+        .frame-wrapper--bottom-small {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            height: 130px;
+            width: auto;
+            max-width: calc(100vw - 40px);
+            display: inline-block;
+            overflow: hidden;
+            pointer-events: auto;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+            z-index: 10;
+        }
+
+        /* Скрытая распорка для задания ширины по содержимому (только для нижней рамки) */
         .spacer {
             visibility: hidden;
-            padding: 10px 14px;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.5;
             white-space: pre-wrap;
             word-break: break-word;
             font-family: inherit;
         }
 
-        /* Абсолютные слои */
+        .frame-wrapper--bottom-small .spacer {
+            padding: 8px 12px;
+            font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+            line-height: 1.35;
+        }
+
+        /* Абсолютные слои внутри каждой рамки */
         .border-outer,
         .border-inner,
         .text-bg {
@@ -66,46 +86,41 @@
             pointer-events: none;
         }
 
-        /* Внешняя линия двойной рамки */
+        /* Внешняя линия рамки – полупрозрачная */
         .border-outer {
-            background: #183c6c;
-            opacity: 0.9;
+            background: rgba(24, 60, 108, 0.35);
             z-index: 1;
         }
 
-        /* Внутренняя линия двойной рамки */
+        /* Внутренняя линия – ещё прозрачнее */
         .border-inner {
-            background: #183c6c;
-            opacity: 0.75;
+            background: rgba(24, 60, 108, 0.25);
             z-index: 2;
         }
 
-        /* Стеклянный (glassmorphism) фон для текста */
+        /* Почти прозрачный стеклянный фон */
         .text-bg {
-            background: rgba(255, 255, 255, 0.08);   /* почти прозрачный */
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(8px) saturate(120%);
+            -webkit-backdrop-filter: blur(8px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 3;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.02);
         }
 
-        /* Контейнер текста с внутренней прокруткой */
+        /* Текстовый блок */
         .text-content {
             width: 100%;
             height: 100%;
             overflow-y: auto;
             color: #ffffff;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            line-height: 1.5;
             font-weight: 400;
             letter-spacing: 0.3px;
             text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
-            padding: 10px 14px;               /* минимум пустого пространства */
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
         }
@@ -113,85 +128,116 @@
         .text-content::-webkit-scrollbar {
             width: 4px;
         }
-
         .text-content::-webkit-scrollbar-track {
             background: transparent;
         }
-
         .text-content::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.5);
             border-radius: 4px;
         }
 
-        /* Адаптация для мобильных */
-        @media (max-width: 480px) {
-            .frame-wrapper {
+        /* ── ВЕРХНЯЯ РАМКА (увеличенный шрифт) ── */
+        .frame-wrapper--main .text-content {
+            padding: 20px 22px;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            line-height: 1.4;
+        }
+
+        /* ── НИЖНЯЯ РАМКА (мелкий шрифт) ── */
+        .frame-wrapper--bottom-small .text-content {
+            padding: 8px 12px;
+            font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+            line-height: 1.35;
+        }
+
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 900px) {
+            .frame-wrapper--main {
+                width: auto;
+                height: auto;
+                max-width: calc(100vw - 24px);
+                max-height: calc(100vh - 40px - 130px - 20px);
                 top: 12px;
                 left: 12px;
-                max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 24px);
             }
+            .frame-wrapper--main .text-content {
+                padding: 14px 16px;
+                font-size: clamp(1.2rem, 5vw, 1.8rem);
+                line-height: 1.3;
+            }
+            .frame-wrapper--bottom-small {
+                bottom: 12px;
+                right: 12px;
+                height: 110px;
+            }
+        }
 
-            .spacer,
-            .text-content {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-                line-height: 1.4;
+        @media (max-width: 480px) {
+            .frame-wrapper--main {
+                max-height: 45vh;
+            }
+            .frame-wrapper--bottom-small {
+                height: 100px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Hero-изображение -->
     <img class="hero-bg"
          src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
          alt="Rosatom Quantum Poster" />
 
-    <!-- Текстовая рамка -->
-    <div class="frame-wrapper" id="frameWrapper">
-        <!-- Распорка для расчёта размеров -->
-        <div class="spacer" aria-hidden="true">
-«Развитие российских ИТ-технологий: от гейминга до квантового лидерства.
-            Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
-            формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
-            следующий шаг и призвал крупный бизнес включиться в создание квантового
-            программного обеспечения».
-        </div>
-
-        <!-- Внешняя граница -->
-        <div class="border-outer" id="borderOuter"></div>
-        <!-- Внутренняя граница -->
-        <div class="border-inner" id="borderInner"></div>
-        <!-- Стеклянная подложка с текстом -->
-        <div class="text-bg" id="textBg">
+    <!-- ВЕРХНЯЯ рамка (основная) -->
+    <div class="frame-wrapper--main" id="frameMain">
+        <div class="border-outer" id="mainBorderOuter"></div>
+        <div class="border-inner" id="mainBorderInner"></div>
+        <div class="text-bg" id="mainTextBg">
             <div class="text-content">
-«Развитие российских ИТ-технологий: от гейминга до квантового лидерства.
-            Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
-            формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
-            следующий шаг и призвал крупный бизнес включиться в создание квантового
-            программного обеспечения».
+                «От гейминга до квантового лидерства.
+                Напомним, что ранее, генеральный директор «Росатома» Сергей Кириенко заявлял о важности компьютерных игр для
+                формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
+                следующий шаг и призвал крупный бизнес включиться в создание квантового
+                программного обеспечения».
+            </div>
+        </div>
+    </div>
+
+    <!-- НИЖНЯЯ рамка (в правом нижнем углу) -->
+    <div class="frame-wrapper--bottom-small" id="frameSmall">
+        <!-- Скрытая распорка, задающая ширину рамки по содержимому -->
+        <div class="spacer" aria-hidden="true">
+            Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
+            строительства атомных электростанций и услуг по обогащению урана. Это единственная
+            в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
+            энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
+            эксплуатации.
+        </div>
+        <div class="border-outer" id="smallBorderOuter"></div>
+        <div class="border-inner" id="smallBorderInner"></div>
+        <div class="text-bg" id="smallTextBg">
+            <div class="text-content">
+                Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
+                строительства атомных электростанций и услуг по обогащению урана. Это единственная
+                в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
+                энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
+                эксплуатации.
             </div>
         </div>
     </div>
 
     <script>
         (function() {
-            const wrapper = document.getElementById('frameWrapper');
-            const borderOuter = document.getElementById('borderOuter');
-            const borderInner = document.getElementById('borderInner');
-            const textBg = document.getElementById('textBg');
-
             // Параметры скосов и скруглений
-            const BEVEL = 20;          // размер скоса (px)
-            const RADIUS = 8;          // радиус скругления (px)
-            const OUTER_WIDTH = 3;     // толщина внешней линии рамки
-            const GAP = 3;             // зазор между линиями
-            const INNER_WIDTH = 3;     // толщина внутренней линии
+            const BEVEL = 20;
+            const RADIUS = 8;
+            const OUTER_WIDTH = 3;
+            const GAP = 3;
+            const INNER_WIDTH = 3;
             const OFFSET_INNER = OUTER_WIDTH;
             const OFFSET_BG = OUTER_WIDTH + GAP + INNER_WIDTH;
 
-            // Создаёт SVG path с заданным отступом off от краёв
-            function createPath(w, h, off) {
+            // Создаёт SVG path для main-рамки (скос слева вверху и справа внизу)
+            function createPathMain(w, h, off) {
                 if (w <= 0 || h <= 0) return '';
                 const maxOff = Math.min(w / 2, h / 2, 30);
                 const d = Math.min(off, maxOff);
@@ -203,8 +249,7 @@
                 const right = w - d;
                 const bottom = h - d;
 
-                // path: скос слева вверху, скос справа внизу, скругления на остальных углах
-                const path = [
+                return [
                     `M ${left} ${top + bv}`,
                     `L ${left + bv} ${top}`,
                     `L ${right - r} ${top}`,
@@ -215,29 +260,73 @@
                     `A ${r} ${r} 0 0 1 ${left} ${bottom - r}`,
                     `Z`
                 ].join(' ');
-
-                return path;
             }
 
-            // Применяет clip-path ко всем слоям
-            function updateClipPaths() {
-                const rect = wrapper.getBoundingClientRect();
-                const w = rect.width;
-                const h = rect.height;
-                if (w === 0 || h === 0) return;
+            // Создаёт SVG path для small-рамки (скос слева внизу и справа вверху)
+            function createPathSmall(w, h, off) {
+                if (w <= 0 || h <= 0) return '';
+                const maxOff = Math.min(w / 2, h / 2, 30);
+                const d = Math.min(off, maxOff);
+                const bv = Math.min(BEVEL, (w - d * 2) / 2, (h - d * 2) / 2);
+                const r = Math.min(RADIUS, (w - d * 2) / 2, (h - d * 2) / 2);
 
-                borderOuter.style.clipPath = `path('${createPath(w, h, 0)}')`;
-                borderInner.style.clipPath = `path('${createPath(w, h, OFFSET_INNER)}')`;
-                textBg.style.clipPath = `path('${createPath(w, h, OFFSET_BG)}')`;
+                const left = d;
+                const top = d;
+                const right = w - d;
+                const bottom = h - d;
+
+                return [
+                    // Начинаем с левого верхнего угла (скругление)
+                    `M ${left + r} ${top}`,
+                    // Верхняя сторона до правого верхнего скоса
+                    `L ${right - bv} ${top}`,
+                    // Скос правого верхнего угла (вниз-влево)
+                    `L ${right} ${top + bv}`,
+                    // Правая сторона до правого нижнего скругления
+                    `L ${right} ${bottom - r}`,
+                    // Дуга правого нижнего угла
+                    `A ${r} ${r} 0 0 1 ${right - r} ${bottom}`,
+                    // Нижняя сторона до левого нижнего скоса
+                    `L ${left + bv} ${bottom}`,
+                    // Скос левого нижнего угла (вверх-вправо)
+                    `L ${left} ${bottom - bv}`,
+                    // Левая сторона до левого верхнего скругления
+                    `L ${left} ${top + r}`,
+                    // Дуга левого верхнего угла
+                    `A ${r} ${r} 0 0 1 ${left + r} ${top}`,
+                    `Z`
+                ].join(' ');
             }
 
-            // Пересчёт при загрузке и изменении размера окна
-            window.addEventListener('load', updateClipPaths);
-            window.addEventListener('resize', updateClipPaths);
+            // Настройка clip-path для одной рамки с указанием типа ('main' или 'small')
+            function setupFrame(wrapperId, outerId, innerId, bgId, type) {
+                const wrapper = document.getElementById(wrapperId);
+                const borderOuter = document.getElementById(outerId);
+                const borderInner = document.getElementById(innerId);
+                const textBg = document.getElementById(bgId);
 
-            // Отслеживание изменения размеров wrapper (если контент изменится)
-            const observer = new ResizeObserver(updateClipPaths);
-            observer.observe(wrapper);
+                const createPath = type === 'small' ? createPathSmall : createPathMain;
+
+                function update() {
+                    const rect = wrapper.getBoundingClientRect();
+                    const w = rect.width;
+                    const h = rect.height;
+                    if (w === 0 || h === 0) return;
+
+                    borderOuter.style.clipPath = `path('${createPath(w, h, 0)}')`;
+                    borderInner.style.clipPath = `path('${createPath(w, h, OFFSET_INNER)}')`;
+                    textBg.style.clipPath = `path('${createPath(w, h, OFFSET_BG)}')`;
+                }
+
+                window.addEventListener('load', update);
+                window.addEventListener('resize', update);
+                const observer = new ResizeObserver(update);
+                observer.observe(wrapper);
+            }
+
+            // Инициализация двух рамок
+            setupFrame('frameMain', 'mainBorderOuter', 'mainBorderInner', 'mainTextBg', 'main');
+            setupFrame('frameSmall', 'smallBorderOuter', 'smallBorderInner', 'smallTextBg', 'small');
         })();
     </script>
 </body>
