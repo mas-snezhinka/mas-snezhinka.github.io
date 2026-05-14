@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROSATOM</title>
+    <title>Росатом – квантовое лидерство</title>
     <style>
         * {
             margin: 0;
@@ -37,8 +37,8 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 855px;
-            height: 480px;
+            width: 860px;
+            height: 430px;
             max-width: calc(100vw - 40px);
             max-height: calc(100vh - 40px);
             display: inline-block;
@@ -48,12 +48,12 @@
             z-index: 10;
         }
 
-        /* ===== НИЖНЯЯ РАМКА (левый нижний угол) ===== */
+        /* ===== НИЖНЯЯ РАМКА (правый нижний угол) ===== */
         .frame-wrapper--bottom-small {
             position: fixed;
             bottom: 20px;
-            left: 20px;
-            height: 250px;
+            right: 20px;
+            height: 130px;
             width: auto;
             max-width: calc(100vw - 40px);
             display: inline-block;
@@ -61,6 +61,20 @@
             pointer-events: auto;
             filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
             z-index: 10;
+        }
+
+        /* Скрытая распорка для задания ширины по содержимому (только для нижней рамки) */
+        .spacer {
+            visibility: hidden;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
+        }
+
+        .frame-wrapper--bottom-small .spacer {
+            padding: 8px 12px;
+            font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+            line-height: 1.35;
         }
 
         /* Абсолютные слои внутри каждой рамки */
@@ -129,11 +143,11 @@
             line-height: 1.4;
         }
 
-        /* ── НИЖНЯЯ РАМКА (стандартный шрифт) ── */
+        /* ── НИЖНЯЯ РАМКА (мелкий шрифт) ── */
         .frame-wrapper--bottom-small .text-content {
-            padding: 10px 14px;
-            font-size: clamp(0.75rem, 1.6vw, 0.9rem);
-            line-height: 1.45;
+            padding: 8px 12px;
+            font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+            line-height: 1.35;
         }
 
         /* Адаптация для маленьких экранов */
@@ -142,7 +156,7 @@
                 width: auto;
                 height: auto;
                 max-width: calc(100vw - 24px);
-                max-height: calc(100vh - 40px - 250px - 20px);
+                max-height: calc(100vh - 40px - 130px - 20px);
                 top: 12px;
                 left: 12px;
             }
@@ -153,8 +167,8 @@
             }
             .frame-wrapper--bottom-small {
                 bottom: 12px;
-                left: 12px;
-                height: 200px;
+                right: 12px;
+                height: 110px;
             }
         }
 
@@ -163,7 +177,7 @@
                 max-height: 45vh;
             }
             .frame-wrapper--bottom-small {
-                height: 180px;
+                height: 100px;
             }
         }
     </style>
@@ -188,8 +202,16 @@
         </div>
     </div>
 
-    <!-- НИЖНЯЯ рамка (в левом нижнем углу) -->
+    <!-- НИЖНЯЯ рамка (в правом нижнем углу) -->
     <div class="frame-wrapper--bottom-small" id="frameSmall">
+        <!-- Скрытая распорка, задающая ширину рамки по содержимому -->
+        <div class="spacer" aria-hidden="true">
+            Корпорация «Росатом» является абсолютным мировым лидером в сфере экспортного
+            строительства атомных электростанций и услуг по обогащению урана. Это единственная
+            в мире компания, обладающая полным, замкнутым технологическим циклом в атомной
+            энергетике — от добычи руды до утилизации ядерных отходов и вывода АЭС из
+            эксплуатации.
+        </div>
         <div class="border-outer" id="smallBorderOuter"></div>
         <div class="border-inner" id="smallBorderInner"></div>
         <div class="text-bg" id="smallTextBg">
