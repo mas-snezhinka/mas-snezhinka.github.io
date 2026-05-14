@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Росатом – квантовый суверенитет</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #000;
+        }
+
+        /* Полноэкранное фоновое изображение */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Рамка в левом верхнем углу */
+        .frame-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: inline-block;
+            max-width: calc(100vw - 40px);
+            max-height: calc(100vh - 40px);
+            overflow: hidden;
+            pointer-events: auto;
+            z-index: 10;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
+        }
+
+        /* Скрытая «распорка» задаёт натуральные размеры */
+        .spacer {
+            visibility: hidden;
+            padding: 12px 16px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            line-height: 1.55;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
+        }
+
+        /* Абсолютные слои */
+        .border-outer,
+        .border-inner,
+        .text-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        /* Внешняя линия двойной рамки */
+        .border-outer {
+            background: #183c6c;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        /* Внутренняя линия двойной рамки */
+        .border-inner {
+            background: #183c6c;
+            opacity: 0.75;
+            z-index: 2;
+        }
+
+        /* Стеклянный фон для текста */
+        .text-bg {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
+        }
+
+        /* Контейнер текста с прокруткой */
+        .text-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            color: #ffffff;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            line-height: 1.55;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+            padding: 12px 16px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+        }
+
+        .text-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .text-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .text-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        /* Адаптация под маленькие экраны */
+        @media (max-width: 480px) {
+            .frame-wrapper {
+                top: 12px;
+                left: 12px;
+                max-width: calc(100vw - 24px);
+                max-height: calc(100vh - 24px);
+            }
+
+            .spacer,
+            .text-content {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                line-height: 1.45;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="hero-bg"
+    src="https://mas-snezhinka.github.io/img/rosatom_quantum_poster_k.png"
+    alt="Rosatom Quantum Poster" />
+
+    <div class="frame-wrapper" id="frameWrapper">
+        <!-- Скрытая «распорка» определяет размеры -->
+        <div class="spacer" aria-hidden="true">
+            «Развитие российских ИТ-технологий: от гейминга до квантового суверенитета.
+            Напомним, что ранее Сергей Кириенко заявлял о важности компьютерных игр для
+            формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
+            следующий шаг и призвал крупный бизнес включиться в создание квантового
+            программного обеспечения».
+        </div>
+
+        <!-- Внешняя граница -->
+        <div class="border-outer" id="borderOuter"></div>
+        <!-- Внутренняя граница -->
+        <div class="border-inner" id="borderInner"></div>
+        <!-- Стеклянная подложка -->
+        <div class="text-bg" id="textBg">
+            <div class="text-content">
+                «Развитие российских ИТ-технологий: от гейминга до квантового суверенитета.
+                Напомним, что ранее Сергей Кириенко заявлял о важности компьютерных игр для
+                формирования навыков будущего у молодежи, а на Форуме будущих технологий сделал
+                следующий шаг и призвал крупный бизнес включиться в создание квантового
+                программного обеспечения».
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const wrapper = document.getElementById('frameWrapper');
+            const borderOuter = document.getElementById('borderOuter');
+            const borderInner = document.getElementById('borderInner');
+            const textBg = document.getElementById('textBg');
+
+            // Параметры скосов и скруглений
+            const BEVEL = 20;          // размер скоса в пикселях
+            const RADIUS = 8;          // радиус скругления
+            const OUTER_WIDTH = 3;     // толщина внешней линии
+            const GAP = 3;             // зазор между линиями
+            const INNER_WIDTH = 3;     // толщина внутренней линии
+            const OFFSET_INNER = OUTER_WIDTH;
+            const OFFSET_BG = OUTER_WIDTH + GAP + INNER_WIDTH;
+
+            function createPath(w, h, off) {
+                if (w <= 0 || h <= 0) return '';
+                const maxOff = Math.min(w / 2, h / 2, 30);
+                const d = Math.min(off, maxOff);
+                const bv = Math.min(BEVEL, (w - d * 2) / 2, (h - d * 2) / 2);
+                const r = Math.min(RADIUS, (w - d * 2) / 2, (h - d * 2) / 2);
+
+                const left = d;
+                const top = d;
+                const right = w - d;
+                const bottom = h - d;
+
+                // path: скос слева вверху, скос справа внизу, остальные скруглены
+                const path = [
+                    `M ${left} ${top + bv}`,
+                    `L ${left + bv} ${top}`,
+                    `L ${right - r} ${top}`,
+                    `A ${r} ${r} 0 0 1 ${right} ${top + r}`,
+                    `L ${right} ${bottom - bv}`,
+                    `L ${right - bv} ${bottom}`,
+                    `L ${left + r} ${bottom}`,
+                    `A ${r} ${r} 0 0 1 ${left} ${bottom - r}`,
+                    `Z`
+                ].join(' ');
+
+                return path;
+            }
+
+            function updateClipPaths() {
+                const rect = wrapper.getBoundingClientRect();
+                const w = rect.width;
+                const h = rect.height;
+                if (w === 0 || h === 0) return;
+
+                borderOuter.style.clipPath = `path('${createPath(w, h, 0)}')`;
+                borderInner.style.clipPath = `path('${createPath(w, h, OFFSET_INNER)}')`;
+                textBg.style.clipPath = `path('${createPath(w, h, OFFSET_BG)}')`;
+            }
+
+            window.addEventListener('load', updateClipPaths);
+            window.addEventListener('resize', updateClipPaths);
+
+            const observer = new ResizeObserver(updateClipPaths);
+            observer.observe(wrapper);
+        })();
+    </script>
+</body>
+</html>  
